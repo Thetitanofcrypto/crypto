@@ -20,9 +20,11 @@
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: linear-gradient(135deg, #0F172A 0%, #1E1B4B 100%);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 27, 75, 0.95) 100%);
             color: var(--text);
             line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .container {
@@ -35,6 +37,20 @@
             text-align: center;
             padding: 4rem 0;
             background: radial-gradient(circle at center, rgba(79, 70, 229, 0.2) 0%, transparent 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('assets/hypernova_logo.png.png') center/cover no-repeat;
+            opacity: 0.1;
+            z-index: -1;
         }
 
         .hero h1 {
@@ -43,6 +59,16 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 1.5rem;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px #4F46E5, 0 0 20px #4F46E5;
+            }
+            to {
+                text-shadow: 0 0 20px #7C3AED, 0 0 30px #7C3AED;
+            }
         }
 
         .content-section {
@@ -52,6 +78,11 @@
             padding: 2rem;
             margin: 2rem 0;
             border: 1px solid rgba(79, 70, 229, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
         }
 
         h2 {
@@ -69,8 +100,30 @@
             border-radius: 0.5rem;
             font-weight: 600;
             margin: 1rem;
-            transition: transform 0.2s;
+            transition: all 0.3s ease;
             border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                120deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
@@ -90,25 +143,64 @@
             padding: 1.5rem;
             border-radius: 0.5rem;
             border: 1px solid rgba(79, 70, 229, 0.2);
+            transition: transform 0.3s ease;
         }
 
-        .faq-item {
-            margin-bottom: 1.5rem;
+        .tokenomics-item:hover {
+            transform: scale(1.05);
         }
 
-        .faq-item strong {
-            color: var(--accent);
+        .logo-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            transition: transform 0.3s ease;
         }
 
-        img {
-            max-width: 100%;
+        .logo-container:hover {
+            transform: scale(1.02);
+        }
+
+        .main-logo {
+            width: 100%;
             height: auto;
             border-radius: 1rem;
-            margin: 2rem 0;
+            box-shadow: 0 0 30px rgba(124, 58, 237, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tokenomics-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                display: block;
+                margin: 1rem 0;
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
+    <div class="particles"></div>
     <div class="container">
         <section class="hero">
             <h1>🌌 Welcome to Hypernova ($HYPER)</h1>
@@ -133,7 +225,9 @@
         <section class="content-section">
             <h2>🌠 The Hypernova Mission</h2>
             <p>We aren't just launching a meme coin. We're ripping through dimensions at FTL speeds, fueled by community chaos, memes, and interstellar degenerate energy.</p>
-            <img src="assets/hypernova_logo1.png" alt="Hypernova Logo">
+            <div class="logo-container">
+                <img src="assets/hypernova_logo1.png" alt="Hypernova Logo" class="main-logo">
+            </div>
         </section>
 
         <section class="content-section">
@@ -158,5 +252,25 @@
             </div>
         </section>
     </div>
+
+    <script>
+        function createParticles() {
+            const particlesContainer = document.querySelector('.particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '2px';
+                particle.style.height = '2px';
+                particle.style.background = 'white';
+                particle.style.borderRadius = '50%';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.animation = `twinkle ${Math.random() * 3 + 1}s infinite`;
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        window.onload = createParticles;
+    </script>
 </body>
 </html>
